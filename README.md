@@ -1,2 +1,2 @@
 # Chart.dc.js
-Integration of Crossfilter with Chart.js, with support for dc.js chart groups 
+Extension to Chart.js that has integration of Crossfilter with Chart.js, with support for dc.js chart groups 
