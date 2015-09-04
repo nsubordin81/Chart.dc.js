@@ -19,7 +19,7 @@ There is no support for Bower or dependency injection with Chart.dc.js at this t
 	Dependency | Include Example (your directory name/structure may vary)
 	--- | ---
 	d3js <http://d3js.org> | `<script src='src/d3.js'></script>` 
-	crossfilter `<http://square.github.io/crossfilter/>` |  `<script src='src/crossfilter.js'></script>` 
+	crossfilter <http://square.github.io/crossfilter/> |  `<script src='src/crossfilter.js'></script>` 
 	dc-js <http://dc-js.github.io/dc.js/> | `<script src='dc.js'></script>`
 	Chart.js <http://www.chartjs.org/> | `<script src='Chart.js'></script>`
 2. Add the dependency for the Chart.dc.js chart you want to include
@@ -42,21 +42,26 @@ There is no support for Bower or dependency injection with Chart.dc.js at this t
 
 ```
 
-   Now for the fun part. Chart.js extensions inherit from the Chart.Type prototype object function which only accepts a single argument for the data and another for the options object. the format for the data is an array of objects that specify the format for the chart elements that make up the chart. We need to follow a slightly different format in order to bake in the crossfilter functionality without messing around in the internal chart code. 
+   Now for the fun part. Chart.js extensions inherit from the Chart.Type prototype function which only accepts a single argument for the data and another for the options object. 
+
+   The data argument is where all of the chart data lives along with the labels and colors it should have in the chart. We need to follow a slightly different format in order to bake in the crossfilter functionality without messing around in the internal chart code. 
    
-   So while we have the same signature of other Chart.js constructor methods, what do we change? Basically, the 'data' argument you pass should not be an array of objects but instead take the following format:
+   Basically, the 'data' argument you pass to your Chart.dc.js chart extension should not be an array of objects but instead take the following format:
 
 ```javascript
 
 
 
-data: {
+var data = {
 	dimension: // the crossfilter dimension you wish to use for this chart
-	colors: // an array of colors, in the order that the crossfilter groupings should be colored
-	highlights: //an array of highlights that should correspond to the colors array
-	labels: //an array of labels (optional) that should correspond to the crossfilter group names as they should appear in tooltips. If non are supplied, the keys of the crossfilter groups will be used
+	colors: // array of the colors you want to have in the chart
+	highlights: //an array of highlights corresponding to each color
+	labels: //an array of labels (optional), the way you wish crossfilter groups to be displayed. If non are supplied, the keys of the crossfilter groups will be used. Getting the order of these right may involve looking at your crossfilter group array in advance.
 	chartGroup: // the dc-js chart group this chart should belong to. If none is supplied, this chart will belong to chart group 0. 
 }
 
+var myOptions = {//you can use any of the options available to Polar Area Charts here}
+
+var myPolarArea = new Chart(ctx).PolarAreaXF(data, myOptions);
 
 ```
