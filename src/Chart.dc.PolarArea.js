@@ -179,7 +179,7 @@
                     value: grouped[i].value,
                     key: grouped[i].key,
                     color: colors[i],
-                    highlight: highlights[i],     
+                    highlight: highlights[i],
                     label: labels ? (labels[i] ? labels[i] : grouped[i].key) : grouped[i].key
                 };
                 chartJSible.push(dataObject);
@@ -223,47 +223,44 @@
             }
 
             this.update();
-            console.log("called for me!");
         },
         filterAll: function() {
-            //implements dc chart registry interface but does nothing!
+            this.dimension.filterAll();
+            this.filters.turnAllOff();
+            this.colorMeIn();
+            this.redraw();
         },
         handleFilter: function(clicked) {
             //after we have all of the filters figured out, change the colors to reflect what they should be and update the chart
-            function colorMeIn(segments) {
-                var activeFilters = [];
-                for (var i = 0; i < segments.length; i++) {
-                    var segment = segments[i];
-                    if (this.filters.isActive(segment.segmentID) || this.filters.allOff()) {
-                        segment.setIncluded(true);
-                        activeFilters.push(segment.key);
-                    } else {
-                        segment.setIncluded(false); 
-                    }
-                }
-                    this.dimension = this.dimension.filterFunction(function(d) {
-                        for(var i = 0; i < activeFilters.length; i++) {
-                            if(d === activeFilters[i]) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    });   
-            }
             this.filters.flip(clicked.segmentID);
-            colorMeIn.call(this, this.segments);
+            this.colorMeIn();
             if (this.filters.allOn()) {
                 this.dimension = this.dimension.filterAll();
-                dc.redrawAll();
+                dc.redrawAll(this.chartGroup);
                 this.filters.turnAllOff();
             }
-             dc.redrawAll();
-
-             
-
-
-            
-           
+            dc.redrawAll(this.chartGroup);
+        },
+        colorMeIn() {
+            var activeFilters = [];
+            var segments = this.segments;
+            for (var i = 0; i < segments.length; i++) {
+                var segment = segments[i];
+                if (this.filters.isActive(segment.segmentID) || this.filters.allOff()) {
+                    segment.setIncluded(true);
+                    activeFilters.push(segment.key);
+                } else {
+                    segment.setIncluded(false);
+                }
+            }
+            this.dimension = this.dimension.filterFunction(function(d) {
+                for (var i = 0; i < activeFilters.length; i++) {
+                    if (d === activeFilters[i]) {
+                        return true;
+                    }
+                }
+                return false;
+            });
         }
     })
 }).call(this);

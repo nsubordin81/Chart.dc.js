@@ -58,8 +58,13 @@ var data = {
 	dimension: // the crossfilter dimension you wish to use for this chart
 	colors: // array of the colors you want to have in the chart
 	highlights: //an array of highlights corresponding to each color
-	labels: //an array of labels (optional), the way you wish crossfilter groups to be displayed. If non are supplied, the keys of the crossfilter groups will be used. Getting the order of these right may involve looking at your crossfilter group array in advance.
-	chartGroup: // the dc-js chart group this chart should belong to. If none is supplied, this chart will belong to chart group 0. 
+	labels: //an array of labels (optional), the way you wish crossfilter groups
+    //to be displayed. If non are supplied, the keys of the 
+    //crossfilter groups will be used. 
+    //Getting the order of these right may involve looking at your 
+    //crossfilter group array in advance.
+	chartGroup: // the dc-js chart group this chart should belong to.
+    //If none is supplied, this chart will belong to chart group 0. 
 }
 
 var myOptions = {//you can use any of the options available to Polar Area Charts here}
