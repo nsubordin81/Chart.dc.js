@@ -12,4 +12,4 @@
 * Update any source files as necessary, add yourself as a contributor to AUTHORS
 * Commit your code and submit a pull request
 * Code will be reviewed (this may take some time, see above explanation in the Bugs section), and a feedback loop will commence that eventually results in more amazing dc-compatible charts!
-* For multiple pull requests from the same fork, please branch your get repository for each one. 
+* For multiple pull requests from the same fork, please branch your git repository for each one. 
