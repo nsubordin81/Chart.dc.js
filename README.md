@@ -73,6 +73,10 @@ var myPolarArea = new Chart(ctx).PolarAreaXF(data, myOptions);
 
 ```
 
+# Licensing #
+
+The project is under the MIT license, a copy of which is included in the repository and in the comment at the top of the source code. Additionally, the project makes use of the following third party libraries: d3.js, crossfilter, dc-js, and Chart.js, all of which come with their own licenses. 
+
 # Contribute #
 
 This project as it stands is not overly robust, the scope is just to extend Chart.js so it can have dc.js-like behavior and work with charts from that library. Any contributions toward that goal are welcomed and encouraged, and ideas that go beyond this scope are welcome as well, but might gain more exposure by being hosted through one of the more mature repositories that this one is based off of, such as d3, dc-js, or Chart.js.
