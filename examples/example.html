@@ -7,194 +7,545 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.css">
     <!-- Latest compiled and minified JavaScript -->
 </head>
 
 <body>
     <div class="jumbotron text-center">
         <h1>Chart.js Polar Area in a DC chart Group</h1>
-        <h3>Using USDA data for recommended food consumption per day for different calorie intakes</h3>
+        <h3>Using Data pulled from Zepfanman's movie spreadsheet about Hayao Miyazaki films</h3>
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 text-center">
+                <h2>Miyazaki's Films Grouped by IMDb Rating</h2>
                 <canvas id="intakeChart" width="400" height="400"></canvas>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 text-center">
+                <h2>Miyazaki's Films Grouped by IMDb Votes</h2>
+                <div id="votes-chart">
+                </div>
             </div>
         </div>
-        <div class="row"></div>
-        <div class="row"></div>
+        
     </div>
+    <div class="jumbotron"></div>
     <!--adding all of my dependencies here -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.js"></script>
+    <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
     <script src="../src/chart.dc.PolarArea.js"></script>
     <script>
-    //data from a report linked on this page: http://www.ers.usda.gov/data-products/food-consumption-and-nutrient-intakes.aspx#26667
-    //did some unit conversion so the data might not be as accurate and also modified the portions to reflect total recommended for that calorie range per day
+    //data from a really cool site collecting data on movies! 
+    
 
-    var foodPortions = [{
-        "food_group": "fruits",
-        "calorie_intake": 1400,
-        "recommended cups": 1.50
+    var miyazaki = [{
+        "Title": "Castle in the Sky",
+        "My": 7,
+        "Calculated": 0,
+        "Performance": null,
+        "Cinematography": null,
+        "Script": null,
+        "Plot": null,
+        "Mood": null,
+        "Source": "[null]",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 80,
+        "IMDb Rating": 8,
+        "Rotten Tom.": null,
+        "Metacritic": null,
+        "Runtime (mins)": 124,
+        "Year": 1986,
+        "Genres": "animation, action, adventure, family, fantasy, romance",
+        "# of IMDb votes": 53869,
+        "IMDb Top 250": "",
+        "1001 Must See…": "",
+        "Desire to see (A-F grading)": "",
+        "Female dir.": null,
+        "Bechdel": null,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "Y",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "",
+        "description": "",
+        "US Release Date (month/day/year)": "Fri Aug 16 20:01:58 2013",
+        "URL": "Fri Aug 16 20:01:58 2013",
+        "Created": 2069,
+        "Modified": null,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
     }, {
-        "food_group": "vegetables",
-        "calorie_intake": 1400,
-        "recommended cups": 1.50
+        "Title": "Howl's Moving Castle",
+        "My": 9,
+        "Calculated": 97,
+        "Performance": 9,
+        "Cinematography": 9,
+        "Script": 10,
+        "Plot": 10,
+        "Mood": 10,
+        "Source": "BD 2013 Disney",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 82.66666667,
+        "IMDb Rating": 8.1,
+        "Rotten Tom.": 87,
+        "Metacritic": 80,
+        "Runtime (mins)": 119,
+        "Year": 2004,
+        "Genres": "animation, action, adventure, family, fantasy, romance",
+        "# of IMDb votes": 121639,
+        "IMDb Top 250": "",
+        "1001 Must See…": "",
+        "Desire to see (A-F grading)": "recent",
+        "Female dir.": null,
+        "Bechdel": 3,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "Y",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "BD",
+        "description": "",
+        "US Release Date (month/day/year)": "10/18/2013",
+        "URL": "10/2/2013",
+        "Created": 2867,
+        "Modified": null,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
     }, {
-        "food_group": "dairy",
-        "calorie_intake": 1400,
-        "recommended cups": 2.51
+        "Title": "Kiki's Delivery Service",
+        "My": 8,
+        "Calculated": 0,
+        "Performance": null,
+        "Cinematography": null,
+        "Script": null,
+        "Plot": null,
+        "Mood": null,
+        "Source": "BD 2014 Disney",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 78,
+        "IMDb Rating": 7.8,
+        "Rotten Tom.": null,
+        "Metacritic": null,
+        "Runtime (mins)": 103,
+        "Year": 1989,
+        "Genres": "animation, adventure, drama, family, fantasy",
+        "# of IMDb votes": 44540,
+        "IMDb Top 250": "",
+        "1001 Must See…": "",
+        "Desire to see (A-F grading)": "A",
+        "Female dir.": null,
+        "Bechdel": null,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "BD",
+        "description": "Hannah DV, Nov14 BD release",
+        "US Release Date (month/day/year)": "Sun Aug 25 13:07:05 2013",
+        "URL": "Sun Aug 25 13:07:05 2013",
+        "Created": 2072,
+        "Modified": null,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
     }, {
-        "food_group": "grains",
-        "calorie_intake": 1400,
-        "recommended cups": 0.62
+        "Title": "Lupin the Third: The Castle of Cagliostro",
+        "My": 8,
+        "Calculated": 0,
+        "Performance": null,
+        "Cinematography": null,
+        "Script": null,
+        "Plot": null,
+        "Mood": null,
+        "Source": "[null]",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 76,
+        "IMDb Rating": 7.6,
+        "Rotten Tom.": null,
+        "Metacritic": null,
+        "Runtime (mins)": 110,
+        "Year": 1979,
+        "Genres": "animation, adventure, family, fantasy",
+        "# of IMDb votes": 10709,
+        "IMDb Top 250": "",
+        "1001 Must See…": "",
+        "Desire to see (A-F grading)": "",
+        "Female dir.": null,
+        "Bechdel": null,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "",
+        "description": "",
+        "US Release Date (month/day/year)": "Fri Aug  9 21:01:04 2013",
+        "URL": "Fri Aug  9 21:01:04 2013",
+        "Created": 2064,
+        "Modified": null,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
     }, {
-        "food_group": "protein",
-        "calorie_intake": 1400,
-        "recommended cups": 0.50
+        "Title": "My Neighbor Totoro",
+        "My": 9,
+        "Calculated": 95,
+        "Performance": 9,
+        "Cinematography": 10,
+        "Script": 9,
+        "Plot": 9,
+        "Mood": 10,
+        "Source": "[null]",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 87,
+        "IMDb Rating": 8.2,
+        "Rotten Tom.": 92,
+        "Metacritic": null,
+        "Runtime (mins)": 86,
+        "Year": 1988,
+        "Genres": "animation, family, fantasy",
+        "# of IMDb votes": 88032,
+        "IMDb Top 250": "",
+        "1001 Must See…": "",
+        "Desire to see (A-F grading)": "",
+        "Female dir.": null,
+        "Bechdel": 3,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "Y",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "BD",
+        "description": "Hannah DV",
+        "US Release Date (month/day/year)": "Fri Aug 23 20:19:19 2013",
+        "URL": "Fri Aug 23 20:19:19 2013",
+        "Created": 2071,
+        "Modified": null,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
     }, {
-        "food_group": "added sugars",
-        "calorie_intake": 1400,
-        "recommended cups": 0.08
+        "Title": "Nausicaä of the Valley of the Wind",
+        "My": 8,
+        "Calculated": 0,
+        "Performance": null,
+        "Cinematography": null,
+        "Script": null,
+        "Plot": null,
+        "Mood": null,
+        "Source": "[null]",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 80,
+        "IMDb Rating": 8,
+        "Rotten Tom.": null,
+        "Metacritic": null,
+        "Runtime (mins)": 117,
+        "Year": 1984,
+        "Genres": "animation, action, adventure, drama, fantasy, sci_fi",
+        "# of IMDb votes": 53265,
+        "IMDb Top 250": "",
+        "1001 Must See…": "",
+        "Desire to see (A-F grading)": "",
+        "Female dir.": null,
+        "Bechdel": null,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "Y",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "",
+        "description": "Hannah BD",
+        "US Release Date (month/day/year)": "Sun Aug  4 19:24:42 2013",
+        "URL": "Sun Aug  4 19:24:42 2013",
+        "Created": 2062,
+        "Modified": null,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
     }, {
-        "food_group": "solid fats",
-        "calorie_intake": 1400,
-        "recommended cups": 0.03
+        "Title": "Ponyo",
+        "My": 9,
+        "Calculated": 85,
+        "Performance": 8,
+        "Cinematography": 9,
+        "Script": 9,
+        "Plot": 9,
+        "Mood": 8,
+        "Source": "BD 2010 Disney",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 84.66666667,
+        "IMDb Rating": 7.6,
+        "Rotten Tom.": 92,
+        "Metacritic": 86,
+        "Runtime (mins)": 101,
+        "Year": 2008,
+        "Genres": "animation, adventure, family, fantasy",
+        "# of IMDb votes": 52532,
+        "IMDb Top 250": "",
+        "1001 Must See…": "",
+        "Desire to see (A-F grading)": "recent",
+        "Female dir.": null,
+        "Bechdel": 3,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "Y",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "",
+        "description": "Hannah BD. First Louisville (technically Indiana) theater experience. Great Escape $6.75 matinee @ 4:55!  DATE: 2009 - 08 - 23 No one is purely one thing.10 / 17 / 13 ",
+        "US Release Date(month / day / year)": "Fri Aug 14 12: 00: 00 2009 ",
+        "URL ":
+        "10 / 17 / 2013 ",
+        "Created ":1670,
+        "Modified ":null,
+        "MIDZ ":null,
+        "1001 position ":null,
+        "Female ":null
     }, {
-        "food_group": "oils",
-        "calorie_intake": 1400,
-        "recommended cups": 0.71
+        "Title": "Porco Rosso",
+        "My": 9,
+        "Calculated": 0,
+        "Performance": null,
+        "Cinematography": null,
+        "Script": null,
+        "Plot": null,
+        "Mood": null,
+        "Source": "[null]",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 77,
+        "IMDb Rating": 7.7,
+        "Rotten Tom.": null,
+        "Metacritic": null,
+        "Runtime (mins)": 94,
+        "Year": 1992,
+        "Genres": "animation, adventure, fantasy, romance",
+        "# of IMDb votes": 28162,
+        "IMDb Top 250": "",
+        "1001 Must See…": "",
+        "Desire to see (A-F grading)": "",
+        "Female dir.": null,
+        "Bechdel": null,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "",
+        "description": "",
+        "US Release Date (month/day/year)": "Wed Aug 28 17:17:44 2013",
+        "URL": "Wed Aug 28 17:17:44 2013",
+        "Created": 2074,
+        "Modified": null,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
     }, {
-        "food_group": "fruits",
-        "calorie_intake": 2000,
-        "recommended cups": 2.00
+        "Title": "Princess Mononoke",
+        "My": 9,
+        "Calculated": 0,
+        "Performance": null,
+        "Cinematography": null,
+        "Script": null,
+        "Plot": null,
+        "Mood": null,
+        "Source": "BD 2014 Disney",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 84,
+        "IMDb Rating": 8.4,
+        "Rotten Tom.": null,
+        "Metacritic": null,
+        "Runtime (mins)": 134,
+        "Year": 1997,
+        "Genres": "animation, action, adventure, drama, fantasy, mystery, romance, war",
+        "# of IMDb votes": 130086,
+        "IMDb Top 250": "Y",
+        "1001 Must See…": "Y",
+        "Desire to see (A-F grading)": "",
+        "Female dir.": null,
+        "Bechdel": 3,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "",
+        "description": "Nov 2014 BD release",
+        "US Release Date (month/day/year)": "",
+        "URL": "",
+        "Created": 170,
+        "Modified": 35,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
     }, {
-        "food_group": "vegetables",
-        "calorie_intake": 2000,
-        "recommended cups": 2.50
+        "Title": "Spirited Away",
+        "My": 9,
+        "Calculated": 92,
+        "Performance": 10,
+        "Cinematography": 9,
+        "Script": 9,
+        "Plot": 9,
+        "Mood": 9,
+        "Source": "[null]",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 92.33333333,
+        "IMDb Rating": 8.6,
+        "Rotten Tom.": 97,
+        "Metacritic": 94,
+        "Runtime (mins)": 125,
+        "Year": 2001,
+        "Genres": "animation, adventure, family, fantasy, mystery",
+        "# of IMDb votes": 235339,
+        "IMDb Top 250": "Y",
+        "1001 Must See…": "Y",
+        "Desire to see (A-F grading)": "C",
+        "Female dir.": null,
+        "Bechdel": 3,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "",
+        "description": "Hannah DV",
+        "US Release Date (month/day/year)": "",
+        "URL": "",
+        "Created": 24,
+        "Modified": 48,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
     }, {
-        "food_group": "dairy",
-        "calorie_intake": 2000,
-        "recommended cups": 3.00
-    }, {
-        "food_group": "grains",
-        "calorie_intake": 2000,
-        "recommended cups": 0.75
-    }, {
-        "food_group": "protein",
-        "calorie_intake": 2000,
-        "recommended cups": 0.69
-    }, {
-        "food_group": "added sugars",
-        "calorie_intake": 2000,
-        "recommended cups": 0.16
-    }, {
-        "food_group": "solid fats",
-        "calorie_intake": 2000,
-        "recommended cups": 0.07
-    }, {
-        "food_group": "oils",
-        "calorie_intake": 2000,
-        "recommended cups": 0.11
-    }, {
-        "food_group": "fruits",
-        "calorie_intake": 2200,
-        "recommended cups": 2.00
-    }, {
-        "food_group": "vegetables",
-        "calorie_intake": 2200,
-        "recommended cups": 3.00
-    }, {
-        "food_group": "dairy",
-        "calorie_intake": 2200,
-        "recommended cups": 3.00
-    }, {
-        "food_group": "grains",
-        "calorie_intake": 2200,
-        "recommended cups": 0.87
-    }, {
-        "food_group": "protein",
-        "calorie_intake": 2200,
-        "recommended cups": 0.75
-    }, {
-        "food_group": "added sugars",
-        "calorie_intake": 2200,
-        "recommended cups": 0.17
-    }, {
-        "food_group": "solid fats",
-        "calorie_intake": 2200,
-        "recommended cups": 0.07
-    }, {
-        "food_group": "oils",
-        "calorie_intake": 2200,
-        "recommended cups": 0.12
-    }, {
-        "food_group": "fruits",
-        "calorie_intake": 3000,
-        "recommended cups": 2.49999
-    }, {
-        "food_group": "vegetables",
-        "calorie_intake": 3000,
-        "recommended cups": 4.00
-    }, {
-        "food_group": "dairy",
-        "calorie_intake": 3000,
-        "recommended cups": 3
-    }, {
-        "food_group": "grains",
-        "calorie_intake": 3000,
-        "recommended cups": 1.24875
-    }, {
-        "food_group": "protein",
-        "calorie_intake": 3000,
-        "recommended cups": 0.87375
-    }, {
-        "food_group": "added sugars",
-        "calorie_intake": 3000,
-        "recommended cups": 2.868
-    }, {
-        "food_group": "solid fats",
-        "calorie_intake": 3000,
-        "recommended cups": 0.12768
-    }, {
-        "food_group": "oils",
-        "calorie_intake": 3000,
-        "recommended cups": 0.18603
-    }];
+        "Title": "The Wind Rises",
+        "My": 8,
+        "Calculated": 83,
+        "Performance": 9,
+        "Cinematography": 9,
+        "Script": 8,
+        "Plot": 8,
+        "Mood": 8,
+        "Source": "BD 2014 Disney",
+        "Title type": "Feature Film",
+        "Directors": "Hayao Miyazaki",
+        "AVG rating": 84,
+        "IMDb Rating": 8.1,
+        "Rotten Tom.": 88,
+        "Metacritic": 83,
+        "Runtime (mins)": 126,
+        "Year": 2013,
+        "Genres": "animation, biography, drama, history",
+        "# of IMDb votes": 4278,
+        "IMDb Top 250": "",
+        "1001 Must See…": "",
+        "Desire to see (A-F grading)": "recent",
+        "Female dir.": null,
+        "Bechdel": null,
+        "LGBTQ Russo": null,
+        "Good Blu-ray": "Y",
+        "Foreign dir.": null,
+        "Netflix/Hulu streaming": null,
+        "LFPL": null,
+        "Wild & Woolly": "BD",
+        "description": "Nov14 BD release. Baxter Theater.",
+        "US Release Date (month/day/year)": "",
+        "URL": "3/1/2014",
+        "Created": 3090,
+        "Modified": null,
+        "MIDZ": null,
+        "1001 position": null,
+        "Female": null
+    }]
+    var cxf = crossfilter(miyazaki);
 
-    var cxf = crossfilter(foodPortions);
-
-    var foodGroupDimension = cxf.dimension(function(d) {
-    	return d["recommended cups"];
+    var movieDimension = cxf.dimension(function(d) {
+        var arg = d["IMDb Rating"];
+        if (arg < 8) {
+            return "less than 8";
+        } else if (arg >= 8 && arg < 8.5) {
+            return "8 - 8.5";
+        } else if (arg >= 8.5) {
+            return "higher than 8.5";
+        } else {
+            return "not rated";
+        }
     });
 
     //set up the colors
-    var colors = ["#1f77b4","#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94"];
-    //will make this different soon, but you get the idea.
-    var highlights = ["#1f77b4","#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94"];
- // #e377c2
- // #f7b6d2
- // #7f7f7f
- // #c7c7c7
- // #bcbd22
- // #dbdb8d
- // #17becf
- // #9edae5]
- 	var ctx = document.getElementById("intakeChart").getContext("2d");
+    var colors = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94"];
+    
+    var highlights = ["#1f88c5", "#aed8e9", "#ff8f3f", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94"];
+    
+    var ctx = document.getElementById("intakeChart").getContext("2d");
 
- 	var data = {};
- 	data.dimension = foodGroupDimension;
- 	data.colors = colors;
- 	data.highlights = highlights;
- 	var myChart = new Chart(ctx).PolarAreaXF(data, {responsive: false}); 
+    var data = {};
+    data.dimension = movieDimension;
+    data.colors = colors;
+    data.highlights = highlights;
+    var myChart = new Chart(ctx).PolarAreaXF(data, {
+        responsive: false
+    });
 
-    </script>
+    titleDimension = cxf.dimension(function(d) {
+        return d.Title;
+    })
+
+    votesGroup = titleDimension.group().reduceSum(function(d) {
+        return d["# of IMDb votes"];
+    });
+
+    var votesChart = dc.barChart("#votes-chart");
+
+    votesChart
+    .width(760)
+    .height(480)
+    .margins({top: 40, right: 50, bottom: 200, left: 60})
+    .dimension(titleDimension)
+    .group(votesGroup, "Total IMDb Votes")
+    .x(d3.scale.ordinal().domain(votesGroup.top(11).map(function(d) {return d.key})))
+    .xUnits(dc.units.ordinal)
+    .renderHorizontalGridLines(false)
+    .centerBar(true)
+    .elasticY(true)
+    .brushOn(false)
+    .legend(dc.legend(dc.legend().x(250).y(10)))
+    .title(function(d) {
+        return "film: " + d.x + " votes: " + d.y;
+    })
+    .xAxis().ticks(11).tickFormat(function(d) {return d; });
+
+    votesChart.renderlet(function(chart) {
+        chart.selectAll("g.x text")
+         .attr('dx', function(d) { return (-60 - d.length);})
+         .attr('dy', function(d) {return -1})
+         .style('fontSize', '1.4em')
+        .attr('transform', 'rotate(-60)');
+    });
+
+    votesChart.render();
+
+    //default legend template doesn't seem to be all that interesting
+    // $("#legend_placeholder").html( myChart.generateLegend());
+</script>
 </body>
 
 </html>
