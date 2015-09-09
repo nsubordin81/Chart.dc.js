@@ -27,7 +27,7 @@ There is no support for Bower or dependency injection with Chart.dc.js at this t
 
 # How To Use #
 
-   If you have not visited the links for any of the above organizations, you are highly encouraged to do so. Each one provides great getting started and API documentation which goes into more depth about how these charts work. However, if you just want to get started quickly with a chart, you might be able to simply follow the guide below or look at the provided example (once it is set up this will be a link).
+   If you have not visited the links for any of the above organizations, you are highly encouraged to do so. Each one provides great getting started and API documentation which goes into more depth about how these charts work. However, if you just want to get started quickly with a chart, you might be able to simply follow the guide below or look at the provided example.
 
    Declare your polar area chart element in HTML same as you would any Chart.js chart element. For example:
 
