@@ -1,5 +1,7 @@
 # Chart.dc.js
 
+:warning: **notice** this repository was created several years ago and since then has not been actively maintained by the original author. Chart.js and crossfilter.js have probably undergone several iterations since that point and other visualization libraries may have emerged as well. If you have interest in taking this project over if there is any value in doing so, feel free to fork and let me know so I can redirect contributors to your repo. thank you! 
+
 Chart.dc.js is an extension of Chart.js devoted to the integration of Crossfilter with Chart.js, with support for dc.js chart groups. 
 
 The need for this grew out of a desire to make use of the clean, simple and unique chart implementations in Chart.js, but to use them with the same kind of behavior that dc.js has incorporated to d3js charts.
